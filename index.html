@@ -1,0 +1,253 @@
+
+<!DOCTYPE html>
+<html lang="en" >
+  <head>
+    <meta charset="utf-8">
+    <title>Image App with Filters 2</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pretty-checkbox/3.0.0/pretty-checkbox.min.css" />
+    <link rel="stylesheet" href="css/styles.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fabric.js/1.7.11/fabric.min.js"></script>
+    <!-- <script src="js/fabric.js"></script> -->
+  </head>
+  <body>
+    <div id="bd-wrapper" >
+      <h2>Fabric Image Filters 2</h2>
+        <canvas id="c" width="600" height="600"></canvas>
+        <div class="controls">
+          <h3>Filters:</h3>
+          <div class="pretty p-default p-round p-thick">
+            <input type="checkbox" id="grayscale" disabled>
+            <div class="state p-primary-o">
+                <label>Grayscale</label>
+            </div>
+        </div>
+        <div class="pretty p-default p-round p-thick">
+            <input type="checkbox" id="invert" disabled>
+            <div class="state p-primary-o">
+                <label>Invert</label>
+            </div>
+        </div>
+        <div class="pretty p-default p-round p-thick">
+            <input type="checkbox" id="sepia" disabled>
+            <div class="state p-primary-o">
+                <label>Sepia</label>
+            </div>
+        </div>
+        <div class="pretty p-default p-round p-thick">
+            <input type="checkbox" id="sepia2" disabled>
+            <div class="state p-primary-o">
+                <label>Sepia2</label>
+            </div>
+        </div>
+        <hr style="border: 1px dotted #d3d3d3;"/>
+        <div class="pretty p-default p-round p-thick">
+            <input type="checkbox" id="remove-white" disabled>
+            <div class="state p-primary-o">
+                <label>Remove White -<small> Threshold / Distance</small></label>
+            </div>
+        </div>
+          <label><input type="range" id="remove-white-threshold" value="60" min="0" max="255" disabled></label>
+          <br><br>
+          <label><input type="range" id="remove-white-distance" value="10" min="0" max="255" disabled></label>
+        <hr style="border: 1px dotted #d3d3d3; margin-top:20px;"/>
+        <div class="pretty p-default p-round p-thick">
+            <input type="checkbox" id="brightness" disabled>
+            <div class="state p-primary-o">
+                <label>Brightness</label>
+            </div>
+        </div>
+          <label><input type="range" id="brightness-value" value="100" min="0" max="255" disabled></label>
+        <hr style="border: 1px dotted #d3d3d3;"/>
+        <div class="pretty p-default p-round p-thick">
+           <input type="checkbox" id="noise" disabled>
+            <div class="state p-primary-o">
+                <label>Noise</label>
+            </div>
+        </div>
+        <label><input type="range" id="noise-value" value="100" min="0" max="1000" disabled></label>
+      </div>
+      <div class="controls">
+        <div class="pretty p-default p-round p-thick">
+           <input type="checkbox" id="gradient-transparency" disabled>
+            <div class="state p-primary-o">
+                <label>Gradient Transparency</label>
+            </div>
+        </div>
+          <label><input type="range" id="gradient-transparency-value" value="100" min="0" max="255" disabled></label>
+        <hr style="border: 1px dotted #d3d3d3;"/>
+        <div class="pretty p-default p-round p-thick">
+           <input type="checkbox" id="pixelate" disabled>
+            <div class="state p-primary-o">
+                <label>Pixelate</label>
+            </div>
+        </div>
+          <label><input type="range" id="pixelate-value" value="4" min="2" max="20" disabled></label>
+        <hr style="border: 1px dotted #d3d3d3;"/>
+        <div class="pretty p-default p-round p-thick">
+          <input type="checkbox" id="blur" disabled>
+            <div class="state p-primary-o">
+                <label>Blur</label>
+            </div>
+        </div>
+        <div class="pretty p-default p-round p-thick">
+          <input type="checkbox" id="sharpen" disabled>
+            <div class="state p-primary-o">
+                <label>Sharpen</label>
+            </div>
+        </div>
+        <div class="pretty p-default p-round p-thick">
+          <input type="checkbox" id="emboss" disabled>
+            <div class="state p-primary-o">
+                <label>Emboss</label>
+            </div>
+        </div>
+        <hr style="border: 1px dotted #d3d3d3;"/>
+        <div class="pretty p-default p-round p-thick">
+         <input type="checkbox" id="tint" disabled>
+            <div class="state p-primary-o">
+                <label>Tint</label>
+            </div>
+        </div>
+        <p>
+          <label><input type="color" id="tint-color" value="#99CCFF"></label><br><br>
+          <label><input type="range" id="tint-opacity" min="0" max="1" value="1" step="0.1"></label><br>
+        </p>
+        <hr style="border: 1px dotted #d3d3d3;"/>
+        <p>
+          <a href="#" id="button" style="text-decoration: none; color: #99CCFF;">Save Image</a>
+        </p>
+        <div class="btn-wrapper-upload">
+          <button class="btn">Upload Image</button>
+          <input type="file" id="files3" name="files3[]" multiple="">
+          <div id="progress_bar"><div class="percent">0%</div></div>
+        </div>    
+      </div>
+      <br/>
+      <textarea id="text-input"></textarea>
+      <br />
+      <div class="controls" id="text-controls-additional">
+       <button class="btn" id="copy">Copy</button>
+       <button class="btn" id="paste">Paste</button><br />
+       <button class="btn" id="startCrop">Start Crop</button> 
+       <button class="btn" id="endCrop">End Crop</button><br /> 
+       <button class="btn" id="undoCrop">Undo Crop</button>
+       <button class="btn" id="redoCrop">Redo Crop</button><br />  
+       <button class="btn" onclick="deleteObject()">Delete</button> 
+        <div class="pretty p-default p-round p-thick">
+          <input id="text-cmd-bold" name="fonttype" type="checkbox" disabled/>
+          <div class="state p-primary-o">
+            <label>Bold</label>
+          </div>
+        </div>
+        <div class="pretty p-default p-round p-thick">
+          <input id="text-cmd-italic" name="fonttype" type="checkbox" disabled/>
+          <div class="state p-primary-o">
+            <label>Italic</label>
+          </div>
+        </div>
+        <div class="pretty p-default p-round p-thick">
+          <input id="text-cmd-underline" name="fonttype" type="checkbox" disabled/>
+          <div class="state p-primary-o">
+            <label>Underline</label>
+          </div>
+        </div>         
+        <div class="pretty p-default p-round p-thick">
+          <input id="text-cmd-linethrough" name="fonttype" type="checkbox" />
+          <div class="state p-primary-o">
+            <label>Linethrough</label>
+          </div>
+        </div>
+        <div class="pretty p-default p-round p-thick">
+          <input id="text-cmd-overline" name="fonttype" type="checkbox" />
+          <div class="state p-primary-o">
+            <label>Overline</label>
+          </div>
+        </div>
+        <hr style="border: 1px dotted #d3d3d3; margin-bottom: 25px;"/>
+        <div id="text-controls">
+          <div class="pretty p-default p-round p-thick">
+            <input type="checkbox" disabled/>
+            <div class="state p-primary-o">
+              <label>Text color</label>
+            </div>
+          </div>
+           <input id="text-color" size="10" type="color" value="#99CCFF" disabled/>
+          <hr style="border: 1px dotted #d3d3d3; margin-bottom: 25px;"/>
+          <div class="pretty p-default p-round p-thick">
+            <input type="checkbox" disabled/>
+            <div class="state p-primary-o">
+              <label>Background color</label>
+            </div>
+          </div>        
+          <input id="text-bg-color" size="10" type="color" value="#99CCFF" />
+          <hr style="border: 1px dotted #d3d3d3; margin-bottom: 25px;"/>
+          <div class="pretty p-default p-round p-thick">
+            <input type="checkbox" disabled/>
+            <div class="state p-primary-o">
+              <label>Stroke -<small> Color / Width</small></label>
+            </div>
+          </div>  
+          <input id="text-stroke-color" type="color" value="#99CCFF"/> 
+          <input id="text-stroke-width" max="5" min="1" type="range" value="1" />
+          <hr style="border: 1px dotted #d3d3d3; margin-bottom: 25px;"/>
+          <div class="pretty p-default p-round p-thick">
+            <input type="checkbox" disabled/>
+            <div class="state p-primary-o">
+              <label>Font size</label>
+            </div>
+          </div>            
+          <input id="text-font-size" max="120" min="1" step="1" type="range" value="12" />
+          <hr style="border: 1px dotted #d3d3d3; margin-bottom: 25px;"/>
+          <div class="pretty p-default p-round p-thick">
+            <input type="checkbox" disabled/>
+            <div class="state p-primary-o" style="margin-bottom: 25px;">
+             <span>Font family</span>
+            </div>     
+           </div>
+           <select id="font-family">
+                <option value="arial">Arial</option>
+                <option selected="" value="helvetica">Helvetica</option>
+                <option value="myriad pro">Myriad Pro</option>
+                <option value="delicious">Delicious</option>
+                <option value="verdana">Verdana</option>
+                <option value="georgia">Georgia</option>
+                <option value="courier">Courier</option>
+                <option value="comic sans ms">Comic Sans MS</option>
+                <option value="impact">Impact</option>
+                <option value="monaco">Monaco</option>
+                <option value="optima">Optima</option>
+                <option value="hoefler text">Hoefler Text</option>
+                <option value="plaster">Plaster</option>
+                <option value="engagement">Engagement</option>
+            </select>
+        </div>
+      </div>
+      <img id="img-one" style="display:none;" src="images/Gingerbread-House.jpg">
+      <img id="img-two" style="display:none;" src="images/Pavlova.jpg">
+      <img id="img-three" style="display:none;" src="images/Gingerbread.jpg">
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+      <script src="js/script.js"></script>
+    </div>
+    <script src="js/script-fabric.js"></script>
+    <script>
+      var canvas = new fabric.Canvas('c');
+      textArea = document.getElementById('text-input');
+      $("#text-input").keyup(function (e) {
+        var formatted = textArea.value;
+          var textSample = new fabric.Text(formatted, {
+              left: 100,
+              top: 100,
+              fontSize: 20,
+              fontFamily: 'delicious_500',
+              backgroundColor: 'transparent',
+              padding: 10,
+              scaleX: 0.9,
+              scaleY: 0.9
+          });
+          canvas.add(textSample).renderAll();
+          canvas.setActiveObject(textSample, e);
+        });
+    </script>
+  </body>
+</html>
