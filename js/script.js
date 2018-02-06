@@ -49,20 +49,19 @@
         $(filters[i]).checked = !!canvas.getActiveObject().filters[i];
       }
     },
+
     'selection:cleared': function() {
       fabric.util.toArray(document.getElementsByTagName('input')).forEach(function(el){ el.disabled = true; })
     },
-  });
 
-  canvas.on ({
-    'object:modified': function () {
-      updateModifications();  // add true for alt method
-    }
-  });
+     'object:modified': function () {
+      console.log('object modified');
+      updateModifications();  
+    },
 
-  canvas.on ({
     'object:added': function () {
-      updateModifications();  // add true for alt method
+      console.log('object added');
+      updateModifications();  
     }
   });
 
@@ -413,6 +412,7 @@
   }
 
   function startCrop(){
+
     canvas.remove(el);
     if(canvas.getActiveObject()) {  
       object=canvas.getActiveObject();
@@ -439,20 +439,17 @@
       });
   
       el.left=canvas.getActiveObject().left;
-      selection_object_left=canvas.getActiveObject().left;
-      selection_object_top=canvas.getActiveObject().top;
       el.top=canvas.getActiveObject().top;
       el.width=canvas.getActiveObject().width*canvas.getActiveObject().scaleX;
       el.height=canvas.getActiveObject().height*canvas.getActiveObject().scaleY;
     
       canvas.add(el);
-      canvas.setActiveObject(el);
+      canvas.setActiveObject(el)
     }
   
     else {
       alert("Please select an object or layer");
     }
-  
   }
 
   function endCrop(){
@@ -482,10 +479,11 @@
         config.canvasState[indexToBeInserted] = canvasAsJson;
         var numberOfElementsToRetain = indexToBeInserted+1;
         config.canvasState = config.canvasState.splice(0, numberOfElementsToRetain);
-      }else{
+      } else {
         config.canvasState.push(canvasAsJson);
       }
       config.currentStateIndex = config.canvasState.length-1;
+      console.log('modification fcn', jsonData);
      }
   }
  
@@ -493,15 +491,16 @@
     if(config.undoFinishedStatus){
       if(config.currentStateIndex == -1){
         config.undoStatus = false;
-      }
-      else{
+      } else {
         if (config.canvasState.length >= 1) {
             config.undoFinishedStatus = 0;
           if(config.currentStateIndex != 0){
             config.undoStatus = true;
             canvas.loadFromJSON(config.canvasState[config.currentStateIndex-1],function(){
                 var jsonData = JSON.parse(config.canvasState[config.currentStateIndex-1]);
-                canvas.renderAll();
+                console.log('undo crop, ', jsonData);
+                lastActive = object;
+                canvas.renderAll();   
                 config.undoStatus = false;
                 config.currentStateIndex -= 1;
                 config.undoFinishedStatus = 1;
@@ -519,48 +518,18 @@
 
   var redoCrop = function() {
     if(config.redoFinishedStatus){
-        if (config.canvasState.length > config.currentStateIndex && config.canvasState.length != 0){
-            config.redoFinishedStatus = 0;
-            config.redoStatus = true;
-            canvas.loadFromJSON(config.canvasState[config.currentStateIndex+1], function(){
-              var jsonData = JSON.parse(config.canvasState[config.currentStateIndex+1]);
-              console.log('redo crop, ', jsonData);
-              canvas.renderAll();
-              config.redoStatus = false;
-              config.currentStateIndex += 1;
-              config.redoFinishedStatus = 1;
-          });
-        }
+      if (config.canvasState.length > config.currentStateIndex && config.canvasState.length != 0){
+          config.redoFinishedStatus = 0;
+          config.redoStatus = true;
+          canvas.loadFromJSON(config.canvasState[config.currentStateIndex+1], function(){
+            var jsonData = JSON.parse(config.canvasState[config.currentStateIndex+1]);
+            console.log('redo crop, ', jsonData);
+            canvas.renderAll();
+            config.redoStatus = false;
+            config.currentStateIndex += 1;
+            config.redoFinishedStatus = 1;
+        });
+      }
     }
-  }
-  
+  } 
 })();
-
-// alternate code for crop function
-// function updateModifications(savehistory) {
-  //   if(savehistory === true) {
-  //     var jsonData = canvas.toJSON();
-  //     var canvasAsJson = JSON.stringify(jsonData);
-  //     state.push(canvasAsJson);
-  //   }
-  // }
-
-  // function undoCrop(){
-  //   if (mods < state.length) {
-  //     canvas.clear().renderAll();
-  //     canvas.loadFromJSON(state[state.length - 1 - mods - 1], function() {
-  //       canvas.renderAll();
-  //     });      
-  //     mods += 1;
-  //   }
-  // }
-
-  // function redoCrop(){
-  //   if (mods > 0) {
-  //     canvas.clear().renderAll();
-  //     canvas.loadFromJSON(state[state.length - 1 - mods + 1], function() {
-  //     canvas.renderAll();
-  //     });
-  //     mods -= 1;
-  //   }
-  // }

@@ -6,9 +6,9 @@
     <title>Image App with Filters 2</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pretty-checkbox/3.0.0/pretty-checkbox.min.css" />
     <link rel="stylesheet" href="css/styles.css">
+     <link rel="stylesheet" href="css/darkroom.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/fabric.js/1.7.11/fabric.min.js"></script>
-    <!-- <script src="js/fabric.js"></script> -->
   </head>
   <body>
     <div id="bd-wrapper" >
@@ -205,7 +205,7 @@
              <span>Font family</span>
             </div>     
            </div>
-           <select id="font-family">
+           <select id="font-family" style="margin-bottom: 102px;">
                 <option value="arial">Arial</option>
                 <option selected="" value="helvetica">Helvetica</option>
                 <option value="myriad pro">Myriad Pro</option>
@@ -229,7 +229,8 @@
       <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
       <script src="js/script.js"></script>
     </div>
-    <script src="js/script-fabric.js"></script>
+    <script src="js/script-fabric.js"></script> 
+    <script src="js/darkroom.js"></script>
     <script>
       var canvas = new fabric.Canvas('c');
       textArea = document.getElementById('text-input');
