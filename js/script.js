@@ -55,26 +55,27 @@
     },
 
      'object:modified': function () {
-      console.log('object modified');
+      //console.log('object modified');
       updateModifications();  
     },
 
     'object:added': function () {
-      console.log('object added');
+      //console.log('object added ');
       updateModifications();  
     }
   });
 
-  fabric.Image.fromURL(document.getElementById('img-one').src, function(img) {
-    var oImg = img.set({ left: 50, top: 100, angle: 0 }).scale(0.9);
+  fabric.Image.fromURL(document.getElementById('gingerbread-house').src, function(img) {
+    var oImg = img.set({ left: 50, top: 100, angle: 0, id: 'gingerbread-house' }).scale(0.9);
     canvas.add(oImg).renderAll();
     canvas.setActiveObject(oImg);
   });
 
-  fabric.Image.fromURL(document.getElementById('img-two').src, function(img) {
-    var oImg = img.set({ left: 300, top: 350, angle: 0 }).scale(0.9);
+  fabric.Image.fromURL('./images/Pavlova.jpg', function(img) {
+    var oImg = img.set({ left: 300, top: 350, angle: 0  }).scale(0.9);
     canvas.add(oImg).renderAll();
     canvas.setActiveObject(oImg);
+
   });
 
   $('grayscale').onclick = function() {
@@ -435,7 +436,8 @@
         height: 1,
         borderColor: '#36fd00',
         cornerColor: 'green',
-        hasRotatingPoint:false
+        hasRotatingPoint:false,
+        objectCaching: false
       });
   
       el.left=canvas.getActiveObject().left;
@@ -465,7 +467,7 @@
       ctx.rect(-(el.width/2)+left, -(el.height/2)+top, parseInt(width*el.scaleX), parseInt(el.scaleY*height));
     }   
     canvas.remove(canvas.getActiveObject(el));
-    console.log('end crop, ', object);
+    //console.log('end crop, ', object);
     lastActive = object;
     canvas.renderAll();   
   }
@@ -483,7 +485,7 @@
         config.canvasState.push(canvasAsJson);
       }
       config.currentStateIndex = config.canvasState.length-1;
-      console.log('modification fcn', jsonData);
+      //console.log('modification fcn', jsonData);
      }
   }
  
@@ -498,7 +500,7 @@
             config.undoStatus = true;
             canvas.loadFromJSON(config.canvasState[config.currentStateIndex-1],function(){
                 var jsonData = JSON.parse(config.canvasState[config.currentStateIndex-1]);
-                console.log('undo crop, ', jsonData);
+                //console.log('undo crop, ', jsonData);
                 lastActive = object;
                 canvas.renderAll();   
                 config.undoStatus = false;
@@ -523,7 +525,7 @@
           config.redoStatus = true;
           canvas.loadFromJSON(config.canvasState[config.currentStateIndex+1], function(){
             var jsonData = JSON.parse(config.canvasState[config.currentStateIndex+1]);
-            console.log('redo crop, ', jsonData);
+            //console.log('redo crop, ', jsonData);
             canvas.renderAll();
             config.redoStatus = false;
             config.currentStateIndex += 1;
