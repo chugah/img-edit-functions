@@ -66,16 +66,15 @@
   });
 
   fabric.Image.fromURL(document.getElementById('gingerbread-house').src, function(img) {
-    var oImg = img.set({ left: 50, top: 100, angle: 0, id: 'gingerbread-house' }).scale(0.9);
+    var oImg = img.set({ left: 50, top: 100, angle: 0 }).scale(0.9);
     canvas.add(oImg).renderAll();
     canvas.setActiveObject(oImg);
   });
 
-  fabric.Image.fromURL('./images/Pavlova.jpg', function(img) {
+  fabric.Image.fromURL(document.getElementById('pavlova').src, function(img) {
     var oImg = img.set({ left: 300, top: 350, angle: 0  }).scale(0.9);
     canvas.add(oImg).renderAll();
     canvas.setActiveObject(oImg);
-
   });
 
   $('grayscale').onclick = function() {
